@@ -1,6 +1,12 @@
-build: 
-	@ g++ -o out.o -W -Wall -Wextra -std=c++17 -O2 ./$(code).cpp
+# Variáveis
+CXX=g++
+CXXFLAGS=-W -Wall -Werror -Wextra -std=c++17 -O2
 
-clean:
-	rm -rf ./out.o
-	rm -rf ./result.txt
+# Regra padrão
+all: build
+
+# Regra de compilação
+build: #$(filter-out $@,$(MAKECMDGOALS))
+	$(CXX) $(CXXFLAGS) $(target).cpp -o out
+
+.PHONY: all build %	
