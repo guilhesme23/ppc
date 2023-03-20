@@ -20,6 +20,25 @@ Node::~Node() {
   }
 }
 
+void Node::updateSize() {
+  for (auto c : this->children) {
+    c->updateSize();
+  }
+
+  size_t filesSize = 0;
+  size_t dirsSize = 0;
+
+  for (auto f : this->files) {
+    filesSize += f.size;
+  }
+
+  for (auto c : this->children) {
+    dirsSize += c->size;
+  }
+
+  this->size = filesSize + dirsSize;
+}
+
 Tree::Tree() {
   this->root = nullptr;
   this->curr = nullptr;
@@ -53,6 +72,8 @@ Tree::Tree(std::vector<Token> tokens) {
     
     }
   }
+
+  this->root->updateSize();
 }
 
 Tree::~Tree() {
@@ -108,21 +129,52 @@ File Tree::findFile(std::string filename) {
   });
 }
 
-void Tree::printFilesystem(Node* node) {
+void Tree::printFilesystem(Node* node, int ident) {
   if (node == nullptr || node == NULL) {
     return;
   }
 
-  for (auto n : node->children) {
-    printFilesystem(n);
+  std::string padding = "";
+  for (int x = 0; x < ident; x++) {
+    padding += "-\t";
   }
 
-  std::cout << node << "\n";
+  std::cout << padding << node << " [" << node->size << "]" << "\n";
+  for (auto n : node->children) {
+    std::cout << padding << n->name << " (dir)" << "\n";
+  }
+
   for (auto f : node->files) {
-    std::cout << f << "\n";
+    std::cout << padding << f << "\n";
+  }
+
+  for (auto n : node->children) {
+    printFilesystem(n, ident+1);
   }
   // std::cout << node;
   // std::cout << std::endl;
+}
+
+void Tree::calculateSizeSum(Node* node, size_t& acc) {
+  if (node->size <= 100000) {
+    acc += node->size;
+  }
+
+  for (auto n : node->children) {
+    calculateSizeSum(n, acc);
+  }
+}
+
+size_t Tree::findBestOption(Node* node, size_t target, size_t& acc) {
+  if (node->size >= target && (node->size < acc || acc == 0)) {
+    acc = node->size;
+  }
+
+  for (auto n : node->children) {
+    findBestOption(n, target, acc);
+  }
+
+  return acc;
 }
 
 std::ostream& operator<<(std::ostream& os, const Node* obj) {
