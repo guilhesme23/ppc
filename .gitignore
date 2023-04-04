@@ -3,3 +3,4 @@ out
 .vscode
 *.txt
 input_gen
+res
