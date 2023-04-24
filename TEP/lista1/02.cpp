@@ -1,15 +1,15 @@
-#include <iostream>
-#include <vector>
-#include <utility>
 #include <bitset>
+#include <iostream>
+#include <utility>
+#include <vector>
 
 using namespace std;
-const auto MAX = 64; 
+const auto MAX = 64;
 
 unsigned long long f(bitset<MAX> x, vector<bitset<MAX>> l) {
   long res = 0;
   for (auto el : l) {
-    res += (x^el).to_ullong();
+    res += (x ^ el).to_ullong();
   }
   return res;
 }
