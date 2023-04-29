@@ -1,7 +1,7 @@
 # Variáveis
 CXX=g++
-CXXFLAGS=-W -Wall -Werror -Wextra -std=c++17 -O2 -I/utils -g
-UTILS=utils/shellParser.cpp utils/ast.cpp
+CXXFLAGS=-W -Wall -Werror -Wextra -std=c++11 -O2 -I/utils -g
+UTILS=#utils/shellParser.cpp utils/ast.cpp
 
 # Regra padrão
 all: build
