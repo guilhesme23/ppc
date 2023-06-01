@@ -8,6 +8,9 @@ all: build
 
 # Regra de compilação
 build: #$(filter-out $@,$(MAKECMDGOALS))
-	$(CXX) $(CXXFLAGS) $(target).cpp $(UTILS) -o out
+	$(CXX) $(CXXFLAGS) $(target) $(UTILS) -o out
+
+test:
+	./out < input.txt
 
 .PHONY: all build %	
